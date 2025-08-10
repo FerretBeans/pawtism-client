@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "dev.ferretbeans.pawtism.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ExampleClientMixin",
+		"PacketMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
