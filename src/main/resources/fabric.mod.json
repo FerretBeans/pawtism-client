@@ -3,17 +3,17 @@
 	"id": "pawtism-client",
 	"version": "${version}",
 	"name": "pawtism client",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "qwq",
 	"authors": [
-		"Me!"
+		"Alice / FerretBeans"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://ferretbeans.dev/",
+		"sources": "https://github.com/FerretBeans/pawtism-client"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/pawtism-client/icon.png",
-	"environment": "*",
+	"icon": "assets/pawtism-client/autism.png",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
 			"dev.ferretbeans.pawtism.PawtismClient"

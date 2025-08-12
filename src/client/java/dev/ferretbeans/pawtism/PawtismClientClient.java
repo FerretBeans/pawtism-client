@@ -1,12 +1,8 @@
 package dev.ferretbeans.pawtism;
 
-import dev.firstdark.rpc.DiscordRpc;
-import dev.firstdark.rpc.enums.ActivityType;
-import dev.firstdark.rpc.exceptions.PipeAccessDenied;
-import dev.firstdark.rpc.exceptions.UnsupportedOsType;
-import dev.firstdark.rpc.handlers.RPCEventHandler;
-import dev.firstdark.rpc.models.DiscordRichPresence;
-import dev.firstdark.rpc.models.User;
+import net.arikia.dev.drpc.DiscordEventHandlers;
+import net.arikia.dev.drpc.DiscordRPC;
+import net.arikia.dev.drpc.DiscordRichPresence;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -44,43 +40,28 @@ public class PawtismClientClient implements ClientModInitializer {
 
 	private boolean loggedServerAddress = false;
 
-    private DiscordRpc rpc;
-
     //get the minecraft instance
     MinecraftClient client = MinecraftClient.getInstance();
 	ClientPlayerEntity player = client.player;
+
+    public void startup() {
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
+            System.out.println("Welcome " + user.username + "#" + user.discriminator + "!");
+        }).build();
+        DiscordRPC.discordInitialize("1404156522254045304", handlers, true);
+    }
+
+    public void createNewPresence() {
+        DiscordRichPresence rich = new DiscordRichPresence.Builder("🐾").setDetails("being silly >w<").setBigImage("671eb0df9f6897d3774beae52e9c4a56edf42226_full_1_", "woaw").build();
+        DiscordRPC.discordUpdatePresence(rich);
+    }
 
     @Override
     public void onInitializeClient() {
         LOGGER.info("Pawtism has been loaded >:3");
 
-        rpc = new DiscordRpc();
-    rpc.setDebugMode(true);
-
-    RPCEventHandler handlerr = new RPCEventHandler() {
-        @Override
-        public void ready(User user) {
-            DiscordRichPresence presence = DiscordRichPresence.builder()
-                    .details("being silly >w<")
-                    .state("🐾")
-                    .largeImageKey("671eb0df9f6897d3774beae52e9c4a56edf42226_full_1_")
-                    .largeImageText("woaw")
-                    .activityType(ActivityType.PLAYING)
-                    .build();
-
-                    rpc.updatePresence(presence);
-                }
-        };
-
-        try {
-            rpc.init("1404156522254045304", handlerr, false);
-        } catch (PipeAccessDenied | UnsupportedOsType e) {
-            e.printStackTrace();
-        }
-
-        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            loggedServerAddress = false;
-        });
+        startup();
+        createNewPresence();
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             loggedServerAddress = false;
